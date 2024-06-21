@@ -3,8 +3,17 @@ using Interpolations
 using QuadGK
 using SpecialFunctions
 
+# vars
 c0 = 3e8 # m s^(-1)
 H0 = 70.0 # km s^(-1) Mpc^(-1)
+energy_matter, energy_dark = 0.3, 0.7
+
+mass_e = 0.511 # MeV
+mass_μ = 105.7 # MeV
+mass_τ = 1780 # MeV
+mass_proton = 938.28 # MeV
+mass_neutron = 939.57 # MeV
+
 
 # Star formation rate (SFR)
 SFR(z) = ((1 + z)^(-34) + ((1 + z)/5000)^3 + ((1 + z)/9)^(35))^(-0.1)
@@ -17,6 +26,8 @@ SNR0(z, M) = η(M) * SFR(z)
 
 intSNR0 = quadgk(M -> SNR0(0, M), 8, 125)[1]
 SNRnorm = 1.25e-4 / intSNR0 # units: 1.25e-4 Mpc^(-3) yr^(-1)
+SNRnorm_low = 0.75e-4 / intSNR0
+SNRnorm_high = 1.75e-4 / intSNR0
 
 # Normalized SFR
 SNR(z, M) = SNRnorm*SNR0(z, M);
@@ -30,3 +41,7 @@ end
 
 # Antiderivative of IMF evaluated at endpts
 ηAD(m_max, m_min) = (m_max^(-1.35)-m_min^(-1.35))/(-1.35)
+
+
+α_to_τoverm(α) = (1/α) * (1/1.516e15)
+τoverm_to_α(τoverm) = (1/τoverm) * (1/1.516e15)
