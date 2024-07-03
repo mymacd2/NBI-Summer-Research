@@ -4,15 +4,16 @@ using QuadGK
 using SpecialFunctions
 
 # vars
-c0 = 3e8 # m s^(-1)
-H0 = 70.0 # km s^(-1) Mpc^(-1)
-energy_matter, energy_dark = 0.3, 0.7
+global c0 = 3e8 # m s^(-1)
+global H0 = 70.0 # km s^(-1) Mpc^(-1)
+global energy_matter = 0.3
+global energy_dark = 0.7
 
-mass_e = 0.511 # MeV
-mass_μ = 105.7 # MeV
-mass_τ = 1780 # MeV
-mass_proton = 938.28 # MeV
-mass_neutron = 939.57 # MeV
+global mass_e = 0.511 # MeV
+global mass_μ = 105.7 # MeV
+global mass_τ = 1780 # MeV
+global mass_proton = 938.28 # MeV
+global mass_neutron = 939.57 # MeV
 
 
 # Star formation rate (SFR)
