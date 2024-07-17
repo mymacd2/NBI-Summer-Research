@@ -1,5 +1,5 @@
 
-logαs = range(-26.0, -24.0, 11)
+logαs = vcat(-27.0, range(-26.0, -24.0, 11), -21.0)
 αs = 10 .^ logαs
 
 # nubars = [true, false]
@@ -13,7 +13,7 @@ function generate_tuples()
         for sm in progs
             for α1 in αs
                 for α2 in αs
-                    println(file, "$bar $sm $α1 $α2")
+                    println(file, "$sm $α1 $α2")
                 end
             end
         end

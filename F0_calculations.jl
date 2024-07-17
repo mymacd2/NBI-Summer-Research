@@ -23,6 +23,91 @@ using SpecialFunctions
 νx_bh = readdlm("Data/s40s7b2c_neutrino_signal_nu_x.dat", comments=true)
 
 
+# 27 Solar Mass
+lum_νe_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_270sm[:,1]),), νe_270sm[:,2], Gridded(Linear()))
+lum_νe_270sm = extrapolate(lum_νe_270sm_ne, 0.0)
+
+em1_νe_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_270sm[:,1]),), νe_270sm[:,3], Gridded(Linear()))
+em1_νe_270sm = extrapolate(em1_νe_270sm_ne, 0.0)
+
+em2_νe_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_270sm[:,1]),), νe_270sm[:,4], Gridded(Linear()))
+em2_νe_270sm = extrapolate(em2_νe_270sm_ne, 0.0)
+
+lum_νebar_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_270sm[:,1]),), νebar_270sm[:,2], Gridded(Linear()))
+lum_νebar_270sm = extrapolate(lum_νebar_270sm_ne, 0.0)
+
+em1_νebar_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_270sm[:,1]),), νebar_270sm[:,3], Gridded(Linear()))
+em1_νebar_270sm = extrapolate(em1_νebar_270sm_ne, 0.0)
+
+em2_νebar_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_270sm[:,1]),), νebar_270sm[:,4], Gridded(Linear()))
+em2_νebar_270sm = extrapolate(em2_νebar_270sm_ne, 0.0)
+
+lum_νx_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_270sm[:,1]),), νx_270sm[:,2], Gridded(Linear()))
+lum_νx_270sm = extrapolate(lum_νx_270sm_ne, 0.0)
+
+em1_νx_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_270sm[:,1]),), νx_270sm[:,3], Gridded(Linear()))
+em1_νx_270sm = extrapolate(em1_νx_270sm_ne, 0.0)
+
+em2_νx_270sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_270sm[:,1]),), νx_270sm[:,4], Gridded(Linear()))
+em2_νx_270sm = extrapolate(em2_νx_270sm_ne, 0.0)
+
+# 11.2 Solar Mass
+lum_νe_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_112sm[:,1]),), νe_112sm[:,2], Gridded(Linear()))
+lum_νe_112sm = extrapolate(lum_νe_112sm_ne, 0.0)
+
+em1_νe_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_112sm[:,1]),), νe_112sm[:,3], Gridded(Linear()))
+em1_νe_112sm = extrapolate(em1_νe_112sm_ne, 0.0)
+
+em2_νe_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_112sm[:,1]),), νe_112sm[:,4], Gridded(Linear()))
+em2_νe_112sm = extrapolate(em2_νe_112sm_ne, 0.0)
+
+lum_νebar_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_112sm[:,1]),), νebar_112sm[:,2], Gridded(Linear()))
+lum_νebar_112sm = extrapolate(lum_νebar_112sm_ne, 0.0)
+
+em1_νebar_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_112sm[:,1]),), νebar_112sm[:,3], Gridded(Linear()))
+em1_νebar_112sm = extrapolate(em1_νebar_112sm_ne, 0.0)
+
+em2_νebar_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_112sm[:,1]),), νebar_112sm[:,4], Gridded(Linear()))
+em2_νebar_112sm = extrapolate(em2_νebar_112sm_ne, 0.0)
+
+lum_νx_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_112sm[:,1]),), νx_112sm[:,2], Gridded(Linear()))
+lum_νx_112sm = extrapolate(lum_νx_112sm_ne, 0.0)
+
+em1_νx_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_112sm[:,1]),), νx_112sm[:,3], Gridded(Linear()))
+em1_νx_112sm = extrapolate(em1_νx_112sm_ne, 0.0)
+
+em2_νx_112sm_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_112sm[:,1]),), νx_112sm[:,4], Gridded(Linear()))
+em2_νx_112sm = extrapolate(em2_νx_112sm_ne, 0.0)
+
+# Black Hole
+lum_νe_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_bh[:,1]),), νe_bh[:,2], Gridded(Linear()))
+lum_νe_bh = extrapolate(lum_νe_bh_ne, 0.0)
+
+em1_νe_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_bh[:,1]),), νe_bh[:,3], Gridded(Linear()))
+em1_νe_bh = extrapolate(em1_νe_bh_ne, 0.0)
+
+em2_νe_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νe_bh[:,1]),), νe_bh[:,4], Gridded(Linear()))
+em2_νe_bh = extrapolate(em2_νe_bh_ne, 0.0)
+
+lum_νebar_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_bh[:,1]),), νebar_bh[:,2], Gridded(Linear()))
+lum_νebar_bh = extrapolate(lum_νebar_bh_ne, 0.0)
+
+em1_νebar_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_bh[:,1]),), νebar_bh[:,3], Gridded(Linear()))
+em1_νebar_bh = extrapolate(em1_νebar_bh_ne, 0.0)
+
+em2_νebar_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νebar_bh[:,1]),), νebar_bh[:,4], Gridded(Linear()))
+em2_νebar_bh = extrapolate(em2_νebar_bh_ne, 0.0)
+
+lum_νx_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_bh[:,1]),), νx_bh[:,2], Gridded(Linear()))
+lum_νx_bh = extrapolate(lum_νx_bh_ne, 0.0)
+
+em1_νx_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_bh[:,1]),), νx_bh[:,3], Gridded(Linear()))
+em1_νx_bh = extrapolate(em1_νx_bh_ne, 0.0)
+
+em2_νx_bh_ne = Interpolations.interpolate((Interpolations.deduplicate_knots!(νx_bh[:,1]),), νx_bh[:,4], Gridded(Linear()))
+em2_νx_bh = extrapolate(em2_νx_bh_ne, 0.0)
+
+
 
 # β = e (electron), ebar (anti electron), x (non electron)
 # sm = small (11.2 SM), large (27.0 SM), bh (Black Hole)
@@ -160,10 +245,10 @@ function F0_tint_vec(β, sm)
     return tintF0
 end
 
-F0_νe_270sm_vec, F0_νebar_270sm_vec, F0_νx_270sm_vec = F0_tint_vec("e", "large"), F0_tint_vec("ebar", "large"), F0_tint_vec("x", "large")
-F0_νe_112sm_vec, F0_νebar_112sm_vec, F0_νx_112sm_vec = F0_tint_vec("e", "small"), F0_tint_vec("ebar", "small"), F0_tint_vec("x", "small")
-F0_νe_bh_vec, F0_νebar_bh_vec, F0_νx_bh_vec = F0_tint_vec("e", "bh"), F0_tint_vec("ebar", "bh"), F0_tint_vec("x", "bh");
+# F0_νe_270sm_vec, F0_νebar_270sm_vec, F0_νx_270sm_vec = F0_tint_vec("e", "large"), F0_tint_vec("ebar", "large"), F0_tint_vec("x", "large")
+# F0_νe_112sm_vec, F0_νebar_112sm_vec, F0_νx_112sm_vec = F0_tint_vec("e", "small"), F0_tint_vec("ebar", "small"), F0_tint_vec("x", "small")
+# F0_νe_bh_vec, F0_νebar_bh_vec, F0_νx_bh_vec = F0_tint_vec("e", "bh"), F0_tint_vec("ebar", "bh"), F0_tint_vec("x", "bh");
 
-F0s_vec = hcat(F0_νe_270sm_vec, F0_νebar_270sm_vec, F0_νx_270sm_vec, F0_νe_112sm_vec, F0_νebar_112sm_vec, F0_νx_112sm_vec, F0_νe_bh_vec, F0_νebar_bh_vec, F0_νx_bh_vec)
+# F0s_vec = hcat(F0_νe_270sm_vec, F0_νebar_270sm_vec, F0_νx_270sm_vec, F0_νe_112sm_vec, F0_νebar_112sm_vec, F0_νx_112sm_vec, F0_νe_bh_vec, F0_νebar_bh_vec, F0_νx_bh_vec)
 
-writedlm("F0s_vec.txt", F0s_vec)
+# writedlm("F0s_vec.txt", F0s_vec)

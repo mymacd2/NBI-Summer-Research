@@ -46,3 +46,11 @@ end
 
 α_to_τoverm(α) = (1/α) * (1/1.516e15)
 τoverm_to_α(τoverm) = (1/τoverm) * (1/1.516e15)
+
+function expnew(x)
+    if exp(x) == Inf
+        return 1e30
+    else
+        return exp(x)
+    end
+end
