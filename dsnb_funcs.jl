@@ -132,11 +132,160 @@ function DSNB_idecay_1pc(E, z0, α1, α2, α3, nubar, ordering, sm, normchoice)
 end
 
 
+# Visible 2ν decay implementation:
+
+function qcontrib_2ν_1pc(E, z0, z, j, jbar, i, ibar, αj, ordering, sm, normchoice)
+
+    if ordering == "NO" && j <= i
+        return println("error: not kinematically allowed")
+    elseif ordering == "IO" && j == 1 && i == 2
+        return println("error: not kinematically allowed")
+    elseif ordering == "IO" && j == 3 && i == 1
+        return println("error: not kinematically allowed")
+    elseif ordering == "IO" && j == 3 && i == 2
+        return println("error: not kinematically allowed")
+    elseif ordering == "IO" && j == 2 && i == 1
+        if jbar != ibar
+            return 0.0
+        else
+            Ers = E*(1+z)/(1+z0)
+            qnorm = 3.086e19 * 1.516e15 * 1e6 / (3e8 * 1e12)
+            return qnorm * (c0/Hubble(z))*DSNB_idecay_1pc(Ers, z, αj, j, jbar, ordering, sm, normchoice) * (αj/Ers)
+        end
+    elseif ordering == "NOQD" && j > i
+        if jbar != ibar
+            return 0.0
+        else
+            Ers = E*(1+z)/(1+z0)
+            qnorm = 3.086e19 * 1.516e15 * 1e6 / (3e8 * 1e12)
+            return qnorm * (c0/Hubble(z))*DSNB_idecay_1pc(Ers, z, αj, j, jbar, "NO", sm, normchoice) * (αj/Ers)
+        end
+    else
+        if jbar == ibar
+            hc = true
+        else
+            hc = false
+        end
+
+        Ers = E*(1+z)/(1+z0)
+
+        qnorm = 3.086e19 * 1.516e15 * 1e6 / (3e8 * 1e12)
+        integrand(Eprime) = qnorm * (c0/Hubble(z))*DSNB_idecay_1pc(Eprime, z, αj, j, jbar, ordering, sm, normchoice) * (αj * 0.5/Eprime) * ψSH(Eprime, Ers, hc)
+        Emax = Ers + 50
+
+        return quadgk(Eprime -> integrand(Eprime), Ers, Emax, rtol=1e-2)[1]
+    end
+end
+
+function DSNB_vdecay_2ν_1pc(E, αj, i, ibar, ordering, sm, normchoice)
+    if αj == 0
+        if ordering == "NO" || ordering == "NOQD"
+            return DSNB_idecay_1pc(E, 0, 0, i, ibar, "NO", sm, normchoice)
+        else
+            return DSNB_idecay_1pc(E, 0, 0, i, ibar, ordering, sm, normchoice)
+        end
+    elseif ordering == "NO" && i == 3
+        return DSNB_idecay_1pc(E, 0, αj, i, ibar, "NO", sm, normchoice)
+    elseif ordering == "NOQD" && i == 3
+        return DSNB_idecay_1pc(E, 0, αj, i, ibar, "NO", sm, normchoice)
+    elseif ordering == "IO" && i == 2
+        return DSNB_idecay_1pc(E, 0, αj, i, ibar, "IO", sm, normchoice)
+    else
+        # Here, for NO we take ν2 to be stable and for IO we take ν1 to be stable, and we take the lightest mass states to be stable as well
+        if ordering == "NO" || ordering == "NOQD"
+            qint = quadgk(z -> (qcontrib_2ν_1pc(E, 0, z, 3, false, i, ibar, αj, ordering, sm, normchoice)+qcontrib_2ν_1pc(E, 0, z, 3, true, i, ibar, αj, ordering, sm, normchoice)), 0, 5, rtol=1e-2)[1]
+            return DSNB_idecay_1pc(E, 0, 0, i, ibar, "NO", sm, normchoice) + qint
+        elseif ordering == "IO"
+            qint = quadgk(z -> (qcontrib_2ν_1pc(E, 0, z, 2, false, i, ibar, αj, "IO", sm, normchoice)+qcontrib_2ν_1pc(E, 0, z, 2, true, i, ibar, αj, "IO", sm, normchoice)), 0, 5, rtol=1e-2)[1]
+            return DSNB_idecay_1pc(E, 0, 0, i, ibar, ordering, sm, normchoice) + qint
+        else
+            return println("error: ordering takes either 'NO' or 'IO'")
+        end
+    end
+end;
+
+# Other few cases where the heaviest mass state and lightest mass state are stable, and the middle mass state decays into the lightest mass state
+function DSNB_vdecay_2ν_alt_1pc(E, αj, i, ibar, ordering, sm, normchoice)
+    if αj == 0
+        if ordering == "NO" || ordering == "NOQD"
+            return DSNB_idecay_1pc(E, 0, 0, i, ibar, "NO", sm, normchoice)
+        else
+            return DSNB_idecay_1pc(E, 0, 0, i, ibar, ordering, sm, normchoice)
+        end
+    elseif ordering == "NO" && i == 2
+        return DSNB_idecay_1pc(E, 0, αj, i, ibar, "NO", sm, normchoice)
+    elseif ordering == "NOQD" && i == 2
+        return DSNB_idecay_1pc(E, 0, αj, i, ibar, "NO", sm, normchoice)
+    elseif ordering == "IO" && i == 1
+        return DSNB_idecay_1pc(E, 0, αj, i, ibar, "IO", sm, normchoice)
+    elseif ordering == "NO" && i == 3
+        return DSNB_idecay_1pc(E, 0, 0, i, ibar, "NO", sm, normchoice)
+    elseif ordering == "IO" && i == 2
+        return DSNB_idecay_1pc(E, 0, 0, i, ibar, "IO", sm, normchoice)
+    else
+        # Here, for NO we take ν1 to be stable and for IO we take ν2 to be stable, and we take the lightest mass states to be stable as well
+        if ordering == "NO" || ordering == "NOQD"
+            qint = quadgk(z -> (qcontrib_2ν_1pc(E, 0, z, 2, false, i, ibar, αj, ordering, sm, normchoice)+qcontrib_2ν_1pc(E, 0, z, 2, true, i, ibar, αj, ordering, sm, normchoice)), 0, 5, rtol=1e-2)[1]
+            return DSNB_idecay_1pc(E, 0, 0, i, ibar, "NO", sm, normchoice) + qint
+        elseif ordering == "IO"
+            qint = quadgk(z -> (qcontrib_2ν_1pc(E, 0, z, 1, false, i, ibar, αj, "IO", sm, normchoice)+qcontrib_2ν_1pc(E, 0, z, 1, true, i, ibar, αj, "IO", sm, normchoice)), 0, 5, rtol=1e-2)[1]
+            return DSNB_idecay_1pc(E, 0, 0, i, ibar, ordering, sm, normchoice) + qint
+        else
+            return println("error: ordering takes either 'NO' or 'IO'")
+        end
+    end
+end
+
+# daughter specifies the state the heaviest mass state decays into in our 2ν framework
+function DSNB_vdecay_2ν_νe_1pc(E, α, daughter, ebar, ordering, sm, normchoice)
+    if ordering == "NO" || ordering == "NOQD"
+        if daughter == 1
+            α1, α2, α3 = α, 0.0, α
+        elseif daughter == 2
+            α1, α2, α3 = 0.0, α, α
+        else
+            return println("error: for NO, 'daughter' must be either ν1 or ν2")
+        end
+    elseif ordering == "IO"
+        if daughter == 3
+            α3, α1, α2 = α, 0.0, α
+        elseif daughter == 1
+            α3, α1, α2 = 0.0, α, α
+        else
+            return println("error: for IO, 'daughter' must be either ν1 or ν3")
+        end
+    else
+        return println("error: ordering must take either 'NO' or 'IO'")
+    end
+    ν3 = DSNB_vdecay_2ν_1pc(E, α3, 3, ebar, ordering, sm, normchoice)
+    ν2 = DSNB_vdecay_2ν_1pc(E, α2, 2, ebar, ordering, sm, normchoice)
+    ν1 = DSNB_vdecay_2ν_1pc(E, α1, 1, ebar, ordering, sm, normchoice)
+    return Usqred("NO")[1, 1]*ν1 + Usqred("NO")[1, 2]*ν2 + Usqred("NO")[1, 3]*ν3
+end
+
+# If we don't specify a daughter, the decay channel is assumed to be from the second lightest to the lightest state
+function DSNB_vdecay_2ν_νe_1pc(E, α, ebar, ordering, sm, normchoice)
+    if ordering == "NO" || ordering == "NOQD"
+        α1, α2, α3 = α, α, 0.0
+    elseif ordering == "IO"
+        α1, α2, α3 = α, 0.0, α
+    else
+        return println("error: ordering must take either 'NO' or 'IO'")
+    end
+    ν3 = DSNB_vdecay_2ν_alt_1pc(E, α3, 3, ebar, ordering, sm, normchoice)
+    ν2 = DSNB_vdecay_2ν_alt_1pc(E, α2, 2, ebar, ordering, sm, normchoice)
+    ν1 = DSNB_vdecay_2ν_alt_1pc(E, α1, 1, ebar, ordering, sm, normchoice)
+    return Usqred("NO")[1, 1]*ν1 + Usqred("NO")[1, 2]*ν2 + Usqred("NO")[1, 3]*ν3
+end
+
 
 # Free black hole fraction:
 
 # bh_frac could be anywhere from 0 to 0.41
 function DSNB_freefbh(E, z0, nubar, ordering, fbh, normchoice)
+    if ordering == "NOQD"
+        ordering = "NO"
+    end
     dsnb_small = DSNB_1pc(E, z0, nubar, ordering, "small", normchoice)
     dsnb_large = DSNB_1pc(E, z0, nubar, ordering, "large", normchoice)
     dsnb_bh = DSNB_1pc(E, z0, nubar, ordering, "bh", normchoice)
@@ -153,6 +302,9 @@ function DSNB_freefbh(E, z0, nubar, ordering, fbh, normchoice)
 end
 
 function DSNB_idecay_freefbh(E, z0, α1, α2, α3, nubar, ordering, fbh, normchoice)
+    if ordering == "NOQD"
+        ordering = "NO"
+    end
     dsnb_small = DSNB_idecay_1pc(E, z0, α1, α2, α3, nubar, ordering, "small", normchoice)
     dsnb_large = DSNB_idecay_1pc(E, z0, α1, α2, α3, nubar, ordering, "large", normchoice)
     dsnb_bh = DSNB_idecay_1pc(E, z0, α1, α2, α3, nubar, ordering, "bh", normchoice)
