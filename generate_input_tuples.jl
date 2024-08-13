@@ -1,5 +1,5 @@
 
-logαs = vcat(-27.0, range(-26.0, -24.0, 11), -21.0)
+logαs = range(-27.0, -23.0, 21)
 αs = 10 .^ logαs
 
 # nubars = [true, false]
